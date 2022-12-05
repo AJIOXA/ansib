@@ -1,0 +1,38 @@
+---
+ - name: Install docker
+   hosts: dev_docker_servers
+   become: yes
+
+   vars:
+#     source_file_red: ./red/index.html
+#     source_file_blue: ./blue/index.html
+     container_docker_image: ajioxxa/dockertask:v3
+     container_docker_name: ajioxxa-ng
+
+   tasks:
+
+   - block: #Debian BLock
+
+     - name: Debian stop docker container
+       shell: "docker stop {{ container_docker_name }}"
+
+     - name: Debian rm docker container
+       shell: "docker rm {{ container_docker_name }}"
+
+     - name: Debian rmi docker image
+       shell: "docker rmi {{ container_docker_image }}"
+
+     when: ansible_os_family == "Debian"
+
+   - block: #RedHat BLock
+
+     - name: Debian stop docker container
+       shell: "docker stop {{ container_docker_name }}"
+
+     - name: Debian rm docker container
+       shell: "docker rm {{ container_docker_name }}"
+
+     - name: Debian rmi docker image
+       shell: "docker rmi {{ container_docker_image }}"
+
+     when: ansible_os_family == "RedHat"

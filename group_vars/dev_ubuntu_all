@@ -1,0 +1,3 @@
+---
+ansible_user: ubuntu
+bg_color: green

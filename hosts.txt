@@ -1,0 +1,27 @@
+[dev_ubuntu_servers]
+ubuntu-host  ansible_host=44.204.113.232
+
+[dev_amazon_servers]
+amazon-host  ansible_host=44.205.7.123
+
+[dev_red_ubuntu_servers]
+ubuntu-red  ansible_host=3.235.16.107
+
+[dev_blue_amazon_servers]
+amazon-blue  ansible_host=44.200.155.214
+
+[dev_ubuntu_all:children]
+dev_ubuntu_servers
+dev_red_ubuntu_servers
+
+[dev_amazon_all:children]
+dev_amazon_servers
+dev_blue_amazon_servers
+
+[dev_redblue_servers:children]
+dev_red_ubuntu_servers
+dev_blue_amazon_servers
+
+[dev_docker_servers:children]
+dev_ubuntu_servers
+dev_amazon_servers

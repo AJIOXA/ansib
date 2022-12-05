@@ -1,0 +1,42 @@
+---
+ - name: Install docker
+   hosts: dev_docker_servers
+   become: yes
+
+   vars:
+#     source_file_red: ./red/index.html
+#     source_file_blue: ./blue/index.html
+     container_docker_image: ajioxxa/dockertask:v3
+     container_docker_name: ajioxxa-ng
+
+   tasks:
+
+   - block: #Debian BLock
+
+     - name: Update apt
+       shell: "apt -y update"
+
+     - name: Install docker to Ubuntu
+      # apt: name=docker-ce state=latest
+       shell: "apt -y install docker.io"
+
+     - name: Running docker service Ubuntu
+       service: name=docker state=started enabled=yes
+
+     - name: Start docker container
+       shell: "docker run --name {{ container_docker_name }} -d -p 80:80 {{ container_docker_image }}"
+
+     when: ansible_os_family == "Debian"
+
+   - block: #Debian BLock
+
+     - name: Install docker to Amazon Linux
+       yum: name=docker state=latest
+
+     - name: Running docker service RedHat
+       service: name=docker state=started enabled=yes
+
+     - name: Start docker container
+       shell: "docker run --name {{ container_docker_name }} -d -p 80:80 {{ container_docker_image }}"
+
+     when: ansible_os_family == "RedHat"
