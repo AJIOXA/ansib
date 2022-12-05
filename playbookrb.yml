@@ -3,53 +3,6 @@
    hosts: dev_redblue_servers
    become: yes
 
-   vars:
-#     source_file_red: ./red/index.html
-#     source_file_blue: ./blue/index.html
-     source_file_tmpl: ./index.j2
-     destin_folder: /var/www/html
-
-   tasks:
-
-   - block: #Debian BLock
-
-     - name: Install Apache2 Web Server to Ubuntu
-       apt: name=apache2 state=latest
-
-#     - name: Copy red page to Apache2 Ubuntu Web server
-#       copy: src={{ source_file_red }} dest={{ destin_file }} mode=0555
-#       notify: Restart Apache2
-
-     - name: Start Apache2 Ubuntu Web Server
-       service: name=apache2 state=started enabled=yes
-
-     when: ansible_os_family == "Debian"
-
-   - block: #RedHat block
-
-     - name: Install Httpd Web Server to Amazon Linux
-       yum: name=httpd state=latest
-
-#     - name: Copy blue page to Httpd Amazon Web server
-#       copy: src={{ source_file_blue }} dest={{ destin_file }} mode=0555
-#       notify: Restart Httpd
-
-     - name: Start Http Amazon Web Server
-       service: name=httpd state=started enabled=yes
-
-     when: ansible_os_family == "RedHat"
-
-   - name: Generate html to redblue servers
-     template: src={{ source_file_tmpl }} dest={{ destin_folder }}/index.html mode=0555
-     notify:
-       - Restart Apache2
-       - Restart Httpd
-
-   handlers:
-   - name: Restart Apache2
-     service: name=apache2 state=restarted
-     when: ansible_os_family == "Debian"
-
-   - name: Restart Httpd
-     service: name=httpd state=restarted
-     when: ansible_os_family == "RedHat"
+   roles:
+   #  - { role: deploy_apache_web, when: ansible_system == "Linux" }
+     - deploy_apache_web

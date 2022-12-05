@@ -1,0 +1,4 @@
+---
+# vars file for deploy_apache_web
+source_file_tmpl: /home/ubuntu/ansib/roles/deploy_apache_web/files/index.j2
+destin_folder: /var/www/html
