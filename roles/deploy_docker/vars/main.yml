@@ -1,0 +1,4 @@
+---
+# vars file for deploy_docker
+ container_docker_image: ajioxxa/dockertask:v3
+ container_docker_name: ajioxxa-ng
